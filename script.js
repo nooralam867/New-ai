@@ -2,21 +2,19 @@ let prompt = document.querySelector("#prompt");
 let submitbtn = document.querySelector("#submit");
 let chatContainer = document.querySelector(".chat-container");
 let imagebtn = document.querySelector("#image");
-let image = document.querySelector("#image img");
 let imageinput = document.querySelector("#image input");
 
 const Api_Url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBacs-f252IdAP2qfK0Tja56BPI0jyZoeM";
 
 let user = {
     message: null,
-    files: [] // Updated to hold multiple files
+    files: []
 };
 
 async function generateResponse(aiChatBox) {
     let text = aiChatBox.querySelector(".ai-chat-area");
-    let parts = [{ text: user.message }];
 
-    // Append file data if available
+    let parts = [{ text: user.message }];
     if (user.files.length > 0) {
         user.files.forEach(file => {
             parts.push({ inline_data: file });
@@ -40,9 +38,7 @@ async function generateResponse(aiChatBox) {
         console.log(error);
     } finally {
         chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: "smooth" });
-        image.src = `img.svg`;
-        image.classList.remove("choose");
-        user.files = []; // Clear the files array after processing
+        user.files = []; // Clear files after submission
     }
 }
 
@@ -55,12 +51,13 @@ function createChatBox(html, classes) {
 
 function handlechatResponse(userMessage) {
     user.message = userMessage;
+
     let html = `<img src="user.png" alt="" id="userImage" width="8%">
 <div class="user-chat-area">
 ${user.message}
-${user.files.map(file => `<img src="data:${file.mime_type};base64,${file.data}" class="chooseimg" />`).join('')}
 </div>`;
     prompt.value = "";
+
     let userChatBox = createChatBox(html, "user-chat-box");
     chatContainer.appendChild(userChatBox);
 
@@ -91,7 +88,9 @@ imageinput.addEventListener("change", () => {
     const files = imageinput.files;
     if (!files.length) return;
 
-    user.files = []; // Reset the files array
+    user.files = []; // Reset files array
+    imagebtn.querySelectorAll("img.preview").forEach(img => img.remove()); // Clear previous previews
+
     Array.from(files).forEach(file => {
         let reader = new FileReader();
         reader.onload = (e) => {
@@ -100,15 +99,16 @@ imageinput.addEventListener("change", () => {
                 mime_type: file.type,
                 data: base64string
             });
+
             let previewImg = document.createElement("img");
-            //previewImg.src = `data:${file.type};base64,${base64string}`;
-            previewImg.classList.add("chooseimg");
-            imagebtn.appendChild(previewImg); // Display preview for each file
+            previewImg.src = `data:${file.type};base64,${base64string}`;
+            previewImg.classList.add("preview");
+            imagebtn.appendChild(previewImg); // Add preview image
         };
         reader.readAsDataURL(file);
     });
 });
 
 imagebtn.addEventListener("click", () => {
-    imagebtn.querySelector("input").click();
+    imageinput.click();
 });
