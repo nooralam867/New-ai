@@ -101,7 +101,7 @@ imageinput.addEventListener("change", () => {
                 data: base64string
             });
             let previewImg = document.createElement("img");
-            previewImg.src = `data:${file.type};base64,${base64string}`;
+            //previewImg.src = `data:${file.type};base64,${base64string}`;
             previewImg.classList.add("chooseimg");
             imagebtn.appendChild(previewImg); // Display preview for each file
         };
