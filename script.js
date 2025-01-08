@@ -100,10 +100,10 @@ imageinput.addEventListener("change", () => {
                 data: base64string
             });
 
-          //  let previewImg = document.createElement("img");
-          //  previewImg.src = `data:${file.type};base64,${base64string}`;
-           // previewImg.classList.add("preview");
-            //imagebtn.appendChild(previewImg); // Add preview image
+           let previewImg = document.createElement("img");
+            previewImg.src = `data:${file.type};base64,${base64string}`;
+            previewImg.classList.add("preview");
+            imagebtn.appendChild(previewImg); // Add preview image
         };
         reader.readAsDataURL(file);
     });
