@@ -113,8 +113,9 @@ body {
 }
 
 .preview {
-    width: 50px;
-    border-radius: 10px;
+    width: 30px; /* Smaller width */
+    height: 30px; /* Smaller height */
+    border-radius: 5px; /* Adjusted border radius for small size */
     margin-top: 10px;
 }
 
