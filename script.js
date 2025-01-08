@@ -94,16 +94,17 @@ imageinput.addEventListener("change", () => {
     Array.from(files).forEach(file => {
         let reader = new FileReader();
         reader.onload = (e) => {
-            let base64string = e.target.result.split(",")[1];
-            user.files.push({
-                mime_type: file.type,
-                data: base64string
-            });
+    let base64string = e.target.result.split(",")[1];
+    user.files.push({
+        mime_type: file.type,
+        data: base64string
+    });
 
-           let previewImg = document.createElement("img");
-            previewImg.src = `data:${file.type};base64,${base64string}`;
-            previewImg.classList.add("preview");
-            imagebtn.appendChild(previewImg); // Add preview image
+    let previewImg = document.createElement("img");
+    previewImg.src = `data:${file.type};base64,${base64string}`;
+    previewImg.classList.add("preview"); // Use the "preview" class for small images
+    imagebtn.appendChild(previewImg); // Display the preview
+   
         };
         reader.readAsDataURL(file);
     });
